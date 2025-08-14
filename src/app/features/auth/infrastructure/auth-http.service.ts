@@ -33,7 +33,7 @@ export class AuthHttpService extends AuthRepository {
   }
 
   register(registerRequest: RegisterAuthRequest): Observable<Response<AuthResponse>> {
-    return this.http.post<Response<AuthResponse>>(`${this.API_URL}/registro-simple`, registerRequest)
+    return this.http.post<Response<AuthResponse>>(`${this.API_URL}/register`, registerRequest)
       .pipe(
         tap(response => this.tokenStorage.setToken(response.data.accessToken))
       );

@@ -34,11 +34,12 @@ export class Register {
 
 
   form = this.fb.nonNullable.group({
-    nombre: ['', Validators.required],
-    apellido: ['', Validators.required],
+    // nombre: ['', Validators.required],
+    // apellido: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
     confirmPassword: ['', [Validators.required]],
+    role: ['', Validators.required]
   }, {
     validators: this.passwordsMatchValidator
   });
@@ -55,7 +56,7 @@ export class Register {
       const registerRequest: RegisterAuthRequest = {
         username: this.form.value.email ?? '',
         password: this.form.value.password ?? '',
-        role: this.form.value.apellido ?? ''
+        role: this.form.value.role ?? ''
       }
 
       this.authFacade.register(registerRequest)

@@ -30,6 +30,6 @@ export const routes: Routes = [
     canMatch: [maintenanceGuard],
     loadComponent: () => import('./features/maintenance/presentation/maintenance/maintenance').then(m => m.Maintenance) },
 
-  { path: '', pathMatch: 'full', redirectTo: 'productos' },
-  { path: '**', redirectTo: 'productos' }
+  // { path: '', pathMatch: 'full', redirectTo: 'productos' },
+  // { path: '**', redirectTo: 'productos' }
 ];
