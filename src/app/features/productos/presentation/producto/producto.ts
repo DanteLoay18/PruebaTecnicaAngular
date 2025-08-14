@@ -6,10 +6,11 @@ import { Store } from '@ngrx/store';
 import * as RestaurantSelector from '../../../../core/state/productos/productos.selectors';
 import { ProductActions } from '../../../../core/state/productos/productos.action';
 import { Router } from '@angular/router';
+import { Alerta } from '../../../../shared';
 
 @Component({
   selector: 'app-restaurante',
-  imports: [CommonModule, Table],
+  imports: [CommonModule, Table, Alerta],
   templateUrl: './producto.html',
   styleUrl: './producto.scss'
 })
@@ -18,6 +19,9 @@ export class Producto {
   private store = inject(Store);
 
   private router = inject(Router);
+  showAlerta = false;
+  mensaje = '';
+  idEliminar = '';
 
 
   vm$ = combineLatest({
@@ -51,6 +55,22 @@ export class Producto {
     this.router.navigate(['/productos/edit',]);
     this.store.dispatch(ProductActions.clearForm());
 
+  }
+
+  showEliminar(id:string, nombre:string){
+    this.showAlerta = true;
+    this.mensaje = "Esta seguro que desea eliminar al producto : " + nombre + " ?";
+    this.idEliminar = id;
+  }
+
+
+  eliminar(){
+    this.store.dispatch(ProductActions.delete({id: this.idEliminar}));
+    this.showAlerta = false;
+  }
+
+  closeAlerta(){
+    this.showAlerta = false;
   }
 
 }

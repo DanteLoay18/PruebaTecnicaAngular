@@ -53,7 +53,7 @@ export class ProductoHttpService extends ProductoRepository {
     }
 
      delete(id: string): Observable<Response<string>> {
-        return this.http.get<Response<string>>(this.API_URL + `/${id}`).pipe(
+        return this.http.delete<Response<string>>(this.API_URL + `/${id}`).pipe(
         );
     }
 }

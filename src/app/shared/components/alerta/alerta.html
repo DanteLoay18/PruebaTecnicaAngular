@@ -13,8 +13,7 @@
       <!-- Icono + Título -->
       <div class="flex items-center justify-center gap-3  w-full mt-2 py-2 rounded-md" [class]="extraBgClass">
         <i class="text-3xl p-2 rounded-full" [class]="iconClass"></i>
-        <h3 class="text-lg font-semibold"
-            [ngClass]="{
+        <h3 class="text-lg font-semibold" [ngClass]="{
               'text-blue-700': type === 'info',
               'text-green-700': type === 'success',
               'text-red-700': type === 'error',
@@ -28,10 +27,22 @@
       <p class="text-sm text-gray-700">{{ message }}</p>
 
       <!-- Botón inferior centrado -->
-      <button (click)="close.emit()"
-              class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-900 transition">
-        Cerrar
-      </button>
+      <div class="mt-4 w-full" [ngClass]="btnAceptarVisible ? 'grid grid-cols-2 gap-3' : 'flex justify-center gap-3'">
+
+        @if (btnAceptarVisible) {
+        <button type="button" (click)="eliminar.emit()"
+          class="px-4 py-2 rounded text-white bg-primary hover:bg-primary-900" [class.w-full]="btnAceptarVisible">
+          Aceptar
+        </button>
+        }
+
+        <button type="button" (click)="close.emit()"
+          class="border bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-900 transition"
+          [class.w-full]="btnAceptarVisible">
+          Cerrar
+        </button>
+      </div>
+
 
     </div>
 

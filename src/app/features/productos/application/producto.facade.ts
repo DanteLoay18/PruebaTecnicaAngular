@@ -25,6 +25,10 @@ export class RestauranteFacade {
         return this.restauranteRepo.getById(id)
     }
 
+    delete(id: string){
+        return this.restauranteRepo.delete(id)
+    }
+
 
 
 }

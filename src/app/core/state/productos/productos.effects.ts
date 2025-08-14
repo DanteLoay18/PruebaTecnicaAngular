@@ -167,4 +167,45 @@ export class RestaurantsEffects {
     ));
 
 
+    delete$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActions.delete),
+
+      switchMap(({ id }) =>
+        this.restauranteFacade.delete(id).pipe(
+          map(r => ProductActions.deleteSuccess({ message: r.message })),
+          catchError(({ error }) => {
+            return of(ProductActions.deleteFailure({ message: error.message, messages: error.messages  }))
+          })
+        ))
+    ));
+
+  deleteSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ProductActions.deleteSuccess),
+        tap(({ message }) => this.toastService.success(message)),
+        tap(() => this.router.navigateByUrl('/productos')),
+        map(()=> ProductActions.loadRequested()),
+      ),
+    // { dispatch: false }
+  );
+
+  deleteFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ProductActions.updateFailure),
+        tap(({ message }) => this.toastService.error(message ?? '')),
+        tap(({ messages }) => {
+          if (messages != null) {
+            messages.forEach((message) => {
+              this.toastService.error(message ?? '');
+            })
+          }
+        })
+        // tap(() => this.router.navigateByUrl('/restaurantes'))
+      ),
+    { dispatch: false }
+  );
+
 }

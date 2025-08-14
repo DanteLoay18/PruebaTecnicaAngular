@@ -13,8 +13,9 @@ export class Alerta {
   @Input() message = 'Ha ocurrido un error inesperado.';
   @Input() type: 'error' | 'success' | 'warning' | 'info' = 'error';
   @Input() visible = false;
-
+  @Input() btnAceptarVisible = false;
   @Output() close = new EventEmitter<void>();
+  @Output() eliminar = new EventEmitter<void>();
 
   readonly ICON_MAP: Record<string, string> = {
     info: 'fa-solid fa-circle-info text-blue-600  rounded-full p-2',

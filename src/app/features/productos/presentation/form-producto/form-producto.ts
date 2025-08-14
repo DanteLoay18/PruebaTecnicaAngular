@@ -12,12 +12,12 @@ import { Categoria } from '../../../../core/models/categoria.model';
 import { CreateProductoRequest, UpdateProductoRequest } from '../../domain/producto.model';
 
 @Component({
-  selector: 'app-form-restaurante',
+  selector: 'app-form-producto',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './form-restaurante.html',
-  styleUrl: './form-restaurante.scss'
+  templateUrl: './form-producto.html',
+  styleUrl: './form-producto.scss'
 })
-export class FormRestaurante implements OnInit {
+export class FormProducto implements OnInit {
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
