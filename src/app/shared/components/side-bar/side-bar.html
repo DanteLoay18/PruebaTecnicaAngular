@@ -1,0 +1,38 @@
+<aside class="bg-[#0E1A2B] text-slate-200 flex flex-col  flex-1 h-full transition-all duration-300"
+  [ngClass]="collapsed ? 'w-16' : 'w-64'">
+
+  <!-- Top -->
+  <div class="px-3 mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-2" [ngClass]="collapsed ? 'mx-auto' : ''">
+      <!-- <span class="text-xl font-semibold text-white-300">Yata Delivery</span> -->
+
+      <!-- <div class="h-3 w-3 rounded-full bg-orange-300"></div>
+      <div class="h-3 w-3 -ml-1 rounded-full bg-orange-500 opacity-80" [ngClass]="collapsed ? 'hidden' : ''"></div> -->
+    </div>
+    <button (click)="toggle.emit()" class="text-slate-400 hover:text-white p-1 rounded-lg"
+      [ngClass]="collapsed ? 'hidden' : ''">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+  </div>
+
+  <!-- Menu: ocupa todo y hace scroll si crece -->
+  <nav class="px-2 space-y-1 overflow-y-auto flex-1">
+
+    <a *ngFor="let it of items" [routerLink]="it.link" routerLinkActive="bg-white text-[#0E1A2B]"
+      [routerLinkActiveOptions]="{ exact: it.exact ?? false }"
+      class="flex items-center gap-3 rounded-lg hover:bg-white/10" [ngClass]="[
+        it.pill ? 'px-2 py-1.5 w-fit ml-1 rounded-full' : 'px-3 py-2'
+     ]">
+      <i class="{{ it.icon }} text-slate-400"></i>
+      <span class="text-sm" [ngClass]="collapsed ? 'hidden' : ''">{{ it.label }}</span>
+    </a>
+
+  </nav>
+
+  <!-- Footer -->
+  <div class="mt-auto px-2 pt-4" *ngIf="collapsed">
+    <button (click)="toggle.emit()" class="w-full p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+</aside>

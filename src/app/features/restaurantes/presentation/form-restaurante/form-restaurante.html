@@ -1,0 +1,144 @@
+<!-- Contenedor -->
+<div class="p-6">
+    <div class="max-w-5xl mx-auto">
+        <!-- Card -->
+        <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+                <h2 class="text-lg font-semibold text-slate-800">{{ isEdit ? 'Editar Restaurante ' : 'Agregar
+                    Restaurante'}} </h2>
+                <button class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50" type="button"
+                    (click)="cancelar()">Cancelar</button>
+            </div>
+
+
+            <!-- Skeleton -->
+            <div *ngIf="isEdit && (isLoadingForm$ | async)" class="px-6 py-5 space-y-6 animate-pulse select-none">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="h-9 bg-slate-100 rounded"></div>
+                    <div class="h-9 bg-slate-100 rounded"></div>
+                    <div class="md:col-span-2 h-24 bg-slate-100 rounded"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="h-40 bg-slate-100 rounded"></div>
+                </div>
+                <div class="flex justify-end gap-3 pt-2 border-t border-slate-100">
+                    <div class="h-9 w-24 bg-slate-100 rounded"></div>
+                    <div class="h-9 w-32 bg-slate-100 rounded"></div>
+                </div>
+            </div>
+
+            <!-- Form real -->
+            <form *ngIf="!isEdit || !(isLoadingForm$ | async)" [formGroup]="form" (ngSubmit)="guardar()"
+                class="px-6 py-5 space-y-6">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm text-slate-600 mb-1">Nombre<span
+                                class="text-rose-500">*</span></label>
+                        <input formControlName="nombre" type="text"
+                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-slate-200"
+                            placeholder="Ingrese el nombre del restaurante " />
+                        <p *ngIf="form.get('nombre')?.touched && form.get('nombre')?.invalid"
+                            class="mt-1 text-xs text-rose-600">El nombre es obligatorio.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-slate-600 mb-1">Tiempo de entrega<span
+                                class="text-rose-500">*</span></label>
+                        <div class="relative">
+                            <input formControlName="tiempoEntrega" type="number" min="0"
+                                class="w-full rounded-lg border border-slate-200 px-3 py-2 pr-14 text-sm focus:ring-2 focus:ring-slate-200"
+                                placeholder="Ingrese su tiempo de entrega" />
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">min</span>
+                            <p *ngIf="form.get('tiempoEntrega')?.touched && form.get('tiempoEntrega')?.invalid"
+                                class="mt-1 text-xs text-rose-600">El tiempo de entrega es obligatorio.</p>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm text-slate-600 mb-1">Descripción<span
+                                class="text-rose-500">*</span></label>
+                        <textarea formControlName="descripcion" rows="3"
+                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-slate-200"
+                            placeholder="Ingrese la descripcion del restaurante."></textarea>
+                        <p *ngIf="form.get('descripcion')?.touched && form.get('descripcion')?.invalid"
+                            class="mt-1 text-xs text-rose-600">La descripción es obligatoria.</p>
+                    </div>
+                </div>
+
+                <!-- Logo + Estado -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Logo / Dropzone -->
+                    <div>
+                        <label class="block text-sm text-slate-600 mb-2">Logo
+                            <!-- <span
+                                class="text-rose-500">*</span> -->
+                        </label>
+
+                        <!-- Preview -->
+                        <div class="flex items-center gap-3 mb-3" *ngIf="logoPreview">
+                            <div
+                                class="h-12 w-12 flex items-center justify-center rounded-lg border border-slate-200 bg-white">
+                                <img [src]="logoPreview" class="max-h-full max-w-full object-contain" loading="lazy"
+                                    decoding="async">
+                            </div>
+                            <!-- <img [src]="logoPreview" class="h-14 w-14 rounded-lg border border-slate-200 object-cover"
+                                alt="preview"> -->
+                            <button type="button" class="text-sm text-slate-600 hover:underline"
+                                (click)="quitarLogo()">Quitar</button>
+                        </div>
+
+                        <!-- Drop / File -->
+                        <label
+                            class="flex flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 hover:border-slate-400 bg-slate-50/50 p-6 cursor-pointer">
+                            <input type="file" accept="image/*" class="hidden" (change)="onFileChange($event)">
+                            <svg class="h-8 w-8 text-slate-400 mb-2" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor">
+                                <path stroke-width="2"
+                                    d="M12 16v-8m0 0-3 3m3-3 3 3M5 20h14a2 2 0 0 0 2-2V8l-6-6H7a2 2 0 0 0-2 2v3" />
+                            </svg>
+                            <span class="text-sm text-slate-600">Arrastra o haz clic para subir</span>
+                            <span class="text-xs text-slate-500">PNG/JPG, máx. 2MB</span>
+                        </label>
+                    </div>
+
+                    <!-- Estado -->
+                    @if(isEdit){
+
+                    <div>
+                        <label class="block text-sm text-slate-600 mb-2">Estado</label>
+                        <label class="inline-flex items-center gap-3">
+                            <span class="text-sm text-slate-600">Inactivo</span>
+                            <input type="checkbox" formControlName="activo" class="sr-only peer">
+                            <div
+                                class="h-6 w-11 rounded-full bg-slate-300 peer-checked:bg-emerald-500 relative transition-colors">
+                                <span
+                                    class="absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-all peer-checked:translate-x-5"></span>
+                            </div>
+                            <span class="text-sm text-slate-600">Activo</span>
+                        </label>
+                    </div>
+                    }
+                </div>
+                <!-- …tus campos… -->
+
+                <div class="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
+                    <button type="button" class="rounded-lg border border-slate-200 px-4 py-2 text-sm hover:bg-slate-50"
+                        (click)="cancelar()">Cancelar</button>
+
+                    <button type="submit"
+                        class="rounded-lg bg-orange-500 px-4 py-2 text-white text-sm font-medium shadow hover:bg-orange-600 disabled:opacity-50"
+                        [disabled]="form.invalid || (isSaving$ | async)">
+                        <ng-container *ngIf="isSaving$ | async; else idleLbl">
+                            {{ isEdit ? 'Actualizando…' : 'Guardando…' }}
+                        </ng-container>
+                        <ng-template #idleLbl>
+                            {{ isEdit ? 'Guardar cambios' : 'Guardar' }}
+                        </ng-template>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

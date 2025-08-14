@@ -1,0 +1,5 @@
+:host {
+  display: flex;                /* que el host sea contenedor flex */
+  flex-direction: column;
+  height: calc(100vh - 4rem);    /* viewport - altura del header */
+}

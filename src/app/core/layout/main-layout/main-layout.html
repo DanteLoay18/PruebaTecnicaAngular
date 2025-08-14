@@ -1,0 +1,23 @@
+<div class="min-h-screen flex flex-col bg-slate-100">
+  <!-- Header -->
+  <app-topbar class="h-16" (menuClick)="toggleSidebar()"></app-topbar>
+
+  <!-- Contenedor principal -->
+  <div class="flex flex-1 min-h-0 overflow-hidden">
+    <!-- Sidebar -->
+    <app-side-bar
+      class="shrink-0 h-full"
+      [collapsed]="collapsed"
+      (toggle)="toggleSidebar()"
+      [items]="menus"
+    ></app-side-bar>
+
+    <!-- Contenido -->
+    <main class="flex-1 min-w-0 overflow-auto p-6">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
+
+
+<app-toast></app-toast>

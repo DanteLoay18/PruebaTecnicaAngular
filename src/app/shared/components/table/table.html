@@ -1,0 +1,64 @@
+<div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+    <table class="min-w-full text-sm">
+      <thead class="bg-slate-50 text-slate-500">
+        <tr>
+          <th *ngFor="let h of headers; let i = index"
+              class="px-4 py-3 font-medium select-none"
+              [class.text-left]="(h.align||'left')==='left'"
+              [class.text-center]="h.align==='center'"
+              [class.text-right]="h.align==='right'"
+              [class.cursor-pointer]="h.sortable"
+
+              (click)="onHeaderClick(i, h)">
+            <span class="inline-flex items-center gap-1">
+              {{ h.label }}
+              <ng-container *ngIf="h.sortable && sortKey===h.key">
+                <span class="text-xs">{{ sortDir==='asc' ? '▲' : '▼' }}</span>
+              </ng-container>
+            </span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-slate-100" *ngIf="!loading; else loadingTpl">
+        <ng-container *ngIf="rows?.length; else emptyTplBlock">
+          <!-- el template del body debe renderizar <tr>...</tr> y recibe "row" -->
+          <ng-container *ngFor="let r of rows; trackBy: trackBy">
+            <ng-container *ngTemplateOutlet="rowTpl; context: {$implicit: r}"></ng-container>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer / Pagination -->
+  <div class="flex flex-wrap items-center justify-between gap-3 mt-4">
+    <div class="flex items-center gap-2">
+      <button class="h-8 w-8 rounded-lg border border-slate-200 text-slate-600 disabled:opacity-40"
+              (click)="goTo(pageIndex-1)" [disabled]="pageIndex<=1">‹</button>
+
+      <div class="text-sm text-slate-600">
+        Página {{ pageIndex }} de {{ totalPages || 1 }}
+      </div>
+
+      <button class="h-8 w-8 rounded-lg border border-slate-200 text-slate-600 disabled:opacity-40"
+              (click)="goTo(pageIndex+1)" [disabled]="pageIndex>=totalPages">›</button>
+    </div>
+
+    <div class="flex items-center gap-2 text-sm">
+      <span>Mostrar</span>
+      <select class="rounded-lg border border-slate-200 px-2 py-1"
+              [ngModel]="pageSize"
+              (ngModelChange)="onPageSize($event)">
+        <option *ngFor="let s of pageSizeOptions" [value]="s">{{ s }} filas</option>
+      </select>
+    </div>
+  </div>
+
+  <ng-template #loadingTpl>
+    <tr><td class="px-4 py-6 text-slate-500 text-center" [attr.colspan]="headers.length">Cargando…</td></tr>
+  </ng-template>
+
+  <ng-template #emptyTplBlock>
+    <tr><td class="px-4 py-10 text-slate-500 text-center" [attr.colspan]="headers.length">Sin resultados.</td></tr>
+  </ng-template>

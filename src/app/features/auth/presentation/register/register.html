@@ -1,0 +1,130 @@
+<!-- <div class="min-h-screen bg-[#fdfdfd] flex items-center justify-center px-4">
+  <div class="w-full max-w-md space-y-6">
+
+    <div class="flex flex-col items-center text-center">
+      <img src="images/logo.jpeg" alt="Yata Logo" class="h-36 md:h-52 w-auto mb-2" />
+
+    </div>
+
+    <div class="bg-white shadow-lg rounded-xl p-6 space-y-1">
+      <h2 class="text-xl font-semibold text-center text-gray-700">Crear cuenta</h2>
+
+      <form [formGroup]="form" (ngSubmit)="register()" class="space-y-4">
+
+        <div>
+          <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombres</label>
+          <input type="text" id="nombre" formControlName="nombre" placeholder="Ingrese su nombre "
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none  " />
+          <p *ngIf="form.get('nombre')?.touched && form.get('nombre')?.invalid" class="text-sm text-red-500 mt-1">
+            {{ form.get('nombreCompleto')?.hasError('required') ? 'Nombre requerido' : 'Nombre inválido' }}
+          </p>
+
+        </div>
+
+
+        <div>
+          <label for="apellido" class="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
+          <input type="text" id="apellido" formControlName="apellido" placeholder="Ingrese su nombre completo"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none  " />
+          <p *ngIf="form.get('apellido')?.touched && form.get('apellido')?.invalid" class="text-sm text-red-500 mt-1">
+            {{ form.get('apellido')?.hasError('required') ? 'Apellido requerido' : 'Apellido inválido' }}
+          </p>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+          <input type="email" id="email" formControlName="email" placeholder="Ingrese su correo"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none  " />
+          <p *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-sm text-red-500 mt-1">
+            {{ form.get('email')?.hasError('required') ? 'Correo requerido' : 'Correo inválido' }}
+          </p>
+        </div>
+
+
+
+        <div class="relative">
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+            placeholder="Ingrese su contraseña" class="w-full px-4 py-2 border rounded-lg focus:outline-none pr-10" />
+
+          <button type="button" (click)="togglePasswordVisibility()"
+            class="absolute top-9 right-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+
+            <i [ngClass]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+          </button>
+
+          <p *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="text-sm text-red-500 mt-1">
+            Contraseña requerida
+          </p>
+        </div>
+
+        <div class="relative">
+          <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirmar contraseña</label>
+
+          <input [type]="showConfirmedPassword ? 'text' : 'password'" id="confirmPassword"
+            formControlName="confirmPassword" placeholder="Confirmar su contraseña"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none pr-10" />
+
+          <button type="button" (click)="toggleConfirmPasswordVisibility()"
+            class="absolute top-9 right-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+            [attr.aria-label]="showConfirmedPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+
+            <i [ngClass]="showConfirmedPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+          </button>
+
+          <p *ngIf="form.get('confirmPassword')?.touched && form.get('confirmPassword')?.hasError('required')"
+            class="text-sm text-red-500 mt-1">
+            Confirmar contraseña requerida
+          </p>
+
+          <p *ngIf="form.hasError('passwordMismatch') && form.get('confirmPassword')?.touched"
+            class="text-sm text-red-500 mt-1">
+            Las contraseñas no coinciden
+          </p>
+        </div>
+
+
+        <button type="submit"
+          class="w-full bg-primary hover:bg-primary-500 text-white font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50"
+          [disabled]="form.invalid">
+          Registrar
+        </button>
+      </form>
+
+      <div class="flex items-center justify-center space-x-2">
+        <hr class="w-full border-gray-300" />
+        <span class="text-gray-500 text-sm">o</span>
+        <hr class="w-full border-gray-300" />
+      </div>
+
+      <div class="flex flex-row justify-center gap-4 ">
+        <button (click)="registerWith('google')" type="button"
+          class="flex items-center justify-center border border-gray-300 rounded-lg p-2 hover:bg-gray-100">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="h-5 w-5" />
+        </button>
+
+        <button (click)="registerWith('facebook')" type="button"
+          class="flex items-center justify-center border border-gray-300 rounded-lg p-2 hover:bg-gray-100">
+          <img src="https://www.svgrepo.com/show/157810/facebook.svg" class="h-5 w-5" />
+        </button>
+
+        <button (click)="registerWith('instagram')" type="button"
+          class="flex items-center justify-center border border-gray-300 rounded-lg p-2 hover:bg-gray-100">
+          <img src="https://www.svgrepo.com/show/452229/instagram-1.svg" class="h-5 w-5" />
+        </button>
+      </div>
+
+
+      <p class="text-center text-sm text-gray-600 ">
+        ¿Ya tienes una cuenta?
+        <a [routerLink]="['..']" class="text-primary-500 font-medium hover:underline">Inicia sesión</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<app-alerta-modal [visible]="showError" [message]="errorMessage" [type]="alertType" (close)="closeAlerta()">
+</app-alerta-modal> -->

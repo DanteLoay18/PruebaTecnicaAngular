@@ -1,0 +1,15 @@
+@keyframes toastbar {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* clase para la barrita */
+.toast-progress {
+  transform-origin: left;
+  animation: toastbar var(--toast-dur, 5s) linear forwards;
+}
+
+/* opcional: respetar reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .toast-progress { animation-duration: 1ms !important; }
+}

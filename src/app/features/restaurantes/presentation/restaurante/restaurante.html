@@ -1,0 +1,102 @@
+<div class="p-6" *ngIf="vm$ | async as vm">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-5">
+    <h1 class="text-xl font-semibold text-slate-800">Restaurantes</h1>
+    <div class="flex items-center gap-2">
+      <!-- TODO : FUNcionalidad de exportar -->
+      <!-- <button class="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 5H3m6 7h12M3 19h12" stroke-width="2" stroke-linecap="round"/></svg>
+          Exportar
+        </button> -->
+      <button (click)="agregarRestaurante()"
+        class="rounded-lg bg-primary-400 px-4 py-2 text-white text-sm font-medium shadow hover:bg-primary-600">
+        + Agregar Restaurante
+      </button>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="flex flex-wrap items-center gap-3 mb-4">
+    <div class="relative">
+      <svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400"
+        viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="11" cy="11" r="7" stroke-width="2" />
+        <path d="m21 21-4.3-4.3" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <input placeholder="Buscar"
+        class="w-64 rounded-lg border border-slate-200 pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-200" />
+    </div>
+
+    <div class="relative">
+      <button
+        class="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 4h18l-7 8v6l-4 2v-8L3 4z" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+        Filters
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <app-table [headers]="vm.headers" [rows]="vm.rows" [total]="vm.total" [pageIndex]="vm.page" [pageSize]="vm.pageSize"
+    [sortKey]="vm.sort || 'nombre'" [sortDir]="vm.dir || 'asc'" [loading]="vm.loading"
+    (sortChange)="onSort($event.key!, $event.dir)" (pageChange)="onPage($event)" (pageSizeChange)="onPageSize($event)">
+    <ng-template let-row>
+      <tr class="hover:bg-slate-50">
+        <td class="px-4 py-3">
+          <div class="flex items-center gap-3">
+            <div class="h-12 w-12 flex items-center justify-center rounded-lg border border-slate-200 bg-white">
+              <img [src]="row.logoUrl" class="max-h-full max-w-full object-contain" loading="lazy" decoding="async">
+            </div>
+            <div class="text-slate-800 font-medium">{{ row.nombre }}</div>
+          </div>
+        </td>
+        <td class="px-4 py-3 text-slate-700">
+          <div class="max-w-[30rem] truncate" [title]="row.descripcion">{{ row.descripcion }}</div>
+        </td>
+        <td class="px-4 py-3 text-right text-slate-700">{{ row.tiempoEntrega }} min</td>
+        <td class="px-4 py-3">
+          <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset"
+            [ngClass]="row.activo ? 'bg-emerald-50 text-emerald-700 ring-emerald-200'
+                                       : 'bg-slate-100 text-slate-600 ring-slate-200'">
+            {{ row.activo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td>
+          <!-- Asegúrate de tener Font Awesome cargado (CDN o paquete) -->
+          <div class="flex items-center gap-2">
+            <!-- Botón Editar -->
+            <button type="button"
+              (click)="editar(row.id)"
+              class="group relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              aria-label="Editar">
+              <i class="fa-solid fa-pen-to-square text-sm"></i>
+
+              <!-- Tooltip -->
+              <span
+                class="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100">
+                Editar
+              </span>
+            </button>
+
+            <!-- Botón Ver productos -->
+            <button type="button"
+              class="group relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              aria-label="Ver productos">
+              <i class="fa-solid fa-box-open text-sm"></i>
+
+              <!-- Tooltip -->
+              <span
+                class="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100">
+                Ver productos
+              </span>
+            </button>
+          </div>
+
+        </td>
+      </tr>
+    </ng-template>
+  </app-table>
+
+</div>

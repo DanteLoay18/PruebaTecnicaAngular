@@ -1,0 +1,97 @@
+<!-- <div class="min-h-screen bg-gray-50 flex justify-center items-center px-4 py-8">
+    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8 space-y-6">
+
+        <div class="flex justify-center">
+            <img src="https://d3i44riiwp5wfm.cloudfront.net/logo-vexplora.jpeg" alt="Vexplora" class="h-40 mb-2" />
+        </div>
+
+        <div class="flex justify-center gap-4 text-sm font-medium text-gray-600">
+            <div class="flex items-center gap-1" [class.text-primary]="currentStep() === 1">
+                <div [ngClass]="{
+          'bg-primary text-white': currentStep() === 1,
+          'bg-gray-300 text-gray-700': currentStep() !== 1
+        }" class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</div>
+
+                Verifica tu correo
+            </div>
+
+            <div class="text-gray-400">→</div>
+
+            <div class="flex items-center gap-1" [class.text-primary]="currentStep() === 2">
+                <div [ngClass]="{
+          'bg-primary text-white': currentStep() === 2,
+          'bg-gray-300 text-gray-700': currentStep() !== 2
+        }" class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</div>
+                Información de empresa
+            </div>
+        </div>
+
+        <div class="relative min-h-[500px]">
+            <form *ngIf="currentStep() === 1" [formGroup]="step1Form" class="space-y-6" (submit)="validateCode()">
+                <div class="flex justify-between items-center mt-10">
+                    <h2 class="text-lg font-semibold text-gray-800">Ingresa el código de verificación</h2>
+                    <button type="button" (click)="skipStep()"
+                        class="text-sm text-[#204D5C] hover:underline font-medium">Omitir</button>
+                </div>
+    
+                <p class="text-sm text-gray-600">Introduce los 6 dígitos enviados a tu correo.</p>
+    
+                <div class="flex justify-between gap-2 max-w-md mx-auto">
+                    <input *ngFor="let ctrl of codeControls; let i = index" [formControl]="step1Form.controls['code' + i]"
+                        maxlength="1" type="text" inputmode="numeric" autocomplete="one-time-code"
+                        class="otp-input w-12 h-14 text-center text-xl border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#204D5C] placeholder-gray-400"
+                        (input)="onOtpInput($event, i)" (keydown)="onKeyDown($event, i)" (paste)="onOtpPaste($event)" #otpInput />
+                </div>
+    
+                <div class="flex justify-between gap-4 mt-4">
+                    <button type="button" (click)="resendCode()"
+                        class="flex-1 px-4 py-2 bg-[#F79534] text-white rounded-lg hover:bg-[#e28022] transition">
+                        Reenviar código
+                    </button>
+    
+                    <button type="button" (click)="validateCode()"
+                        class="flex-1 px-4 py-2 bg-[#204D5C] text-white rounded-lg hover:bg-[#163c49] transition">
+                        Validar código
+                    </button>
+                </div>
+    
+                <p *ngIf="codeValidated()" class="text-green-600 text-sm mt-2 text-center">✔ Código validado correctamente
+                </p>
+            </form>
+    
+            <form *ngIf="currentStep() === 2" [formGroup]="step2Form" class="space-y-4">
+                <label class="block text-sm font-medium text-gray-700">Nombre de empresa</label>
+                <input type="text" formControlName="companyName" class="w-full border rounded-lg px-4 py-2"
+                    placeholder="Vexplora SAC" />
+    
+                <label class="block text-sm font-medium text-gray-700">RUC / NIT</label>
+                <input type="text" formControlName="ruc" class="w-full border rounded-lg px-4 py-2"
+                    placeholder="20123456789" />
+    
+                <label class="block text-sm font-medium text-gray-700">Dirección comercial</label>
+                <input type="text" formControlName="address" class="w-full border rounded-lg px-4 py-2"
+                    placeholder="Av. Principal 123" />
+    
+                <label class="block text-sm font-medium text-gray-700">Subir RUC escaneado (PDF, JPG, PNG)</label>
+                <input type="file" (change)="onFileChange($event)"
+                    class="w-full border rounded-lg px-4 py-2 file:bg-blue-600 file:text-white file:border-0 file:rounded-md file:px-4" />
+    
+                <p class="text-xs text-gray-500">Este paso es necesario para operar como empresa registrada.</p>
+    
+                <div class="flex justify-between pt-4">
+                    <button type="button" (click)="prevStep()"
+                        class="px-4 py-2 border rounded-lg text-gray-700 hover:bg-gray-100">
+                        Atrás
+                    </button>
+                    <button type="button" (click)="submit()" [disabled]="!step2Form.valid"
+                        class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                        Finalizar registro
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+
+    </div>
+</div> -->

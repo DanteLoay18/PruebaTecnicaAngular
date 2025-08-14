@@ -1,0 +1,29 @@
+<!-- features/maintenance/maintenance.component.html -->
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+  <div class="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-8 text-center space-y-6">
+    <div class="space-y-2">
+      <h1 class="text-2xl font-bold text-gray-800">Estamos en mantenimiento</h1>
+      <p class="text-gray-600">Estamos trabajando para volver lo antes posible.</p>
+    </div>
+
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-left space-y-2">
+      <ng-container >
+        <p class="text-amber-800"><span class="font-semibold">Mensaje:</span> Servicio temporalmente no disponible. </p>
+        
+      </ng-container>
+    </div>
+
+    <div class="flex items-center justify-center gap-3">
+      <button (click)="retry()" class="px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100">
+        Reintentar ahora
+      </button>
+      <button (click)="togglePolling()" class="px-4 py-2 rounded-xl bg-gray-800 text-white hover:opacity-90">
+        {{ (polling() ? 'Pausar' : 'Reanudar') }} auto-reintentos
+      </button>
+    </div>
+
+    <div class="text-sm text-gray-400">
+      Si necesitas ayuda, contáctanos en <a href="mailto:soporte@tusitio.com" class="underline">soporte@yatadelivery.com</a>.
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="fixed top-4 right-4 z-[1000] w-[min(92vw,26rem)] space-y-3 pointer-events-none">
+  <div *ngFor="let t of (svc.toasts$ | async); trackBy: trackById"
+    class="pointer-events-auto rounded-xl border p-3 shadow-md flex gap-3 items-start animate-[fadeInUp_.16s_ease]"
+    [ngClass]="containerClass(t.type)">
+
+    <!-- Icono circular -->
+    <div class="mt-0.5 shrink-0 h-6 w-6 rounded-full flex items-center justify-center"
+      [ngClass]="iconCircleClass(t.type)">
+      <svg class="h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <!-- success -->
+        <path *ngIf="t.type==='success'" stroke-width="3" d="M5 13l4 4L19 7" />
+        <!-- error -->
+        <path *ngIf="t.type==='error'" stroke-width="3" d="M6 18 18 6M6 6l12 12" />
+        <!-- info -->
+        <path *ngIf="t.type==='info'" stroke-width="2.5" d="M12 17v-5m0-3h.01" />
+        <!-- warning -->
+        <path *ngIf="t.type==='warning'" stroke-width="2.5" d="M12 9v4m0 4h.01" />
+      </svg>
+    </div>
+
+    <!-- Texto -->
+    <div class="flex-1 min-w-0">
+      <div *ngIf="t.title" class="text-sm font-semibold text-slate-900">{{ t.title }}</div>
+      <div class="text-sm leading-5 text-slate-700 truncate">{{ t.message }}</div>
+
+      <!-- Barra de tiempo -->
+      <!-- ...dentro del toast... -->
+      <div class="mt-2 h-1 rounded bg-slate-200/70 overflow-hidden">
+        <div class="h-full bg-slate-500/60 toast-progress" [style.--toast-dur]="(t.duration || 5000) + 'ms'"></div>
+      </div>
+
+    </div>
+
+    <!-- Cerrar -->
+    <button class="p-1 rounded-md hover:bg-black/5 text-slate-600" (click)="svc.remove(t.id)" aria-label="Cerrar">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-width="2" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+</div>

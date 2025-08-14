@@ -1,0 +1,39 @@
+<!-- alert-modal.component.html -->
+<div *ngIf="visible" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative">
+
+    <!-- Botón de cerrar superior -->
+    <button (click)="close.emit()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+
+    <!-- Contenido centrado -->
+    <div class="flex flex-col items-center text-center space-y-4 mt-2">
+
+      <!-- Icono + Título -->
+      <div class="flex items-center justify-center gap-3  w-full mt-2 py-2 rounded-md" [class]="extraBgClass">
+        <i class="text-3xl p-2 rounded-full" [class]="iconClass"></i>
+        <h3 class="text-lg font-semibold"
+            [ngClass]="{
+              'text-blue-700': type === 'info',
+              'text-green-700': type === 'success',
+              'text-red-700': type === 'error',
+              'text-yellow-700': type === 'warning'
+            }">
+          {{ title }}
+        </h3>
+      </div>
+
+      <!-- Mensaje -->
+      <p class="text-sm text-gray-700">{{ message }}</p>
+
+      <!-- Botón inferior centrado -->
+      <button (click)="close.emit()"
+              class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-900 transition">
+        Cerrar
+      </button>
+
+    </div>
+
+  </div>
+</div>
