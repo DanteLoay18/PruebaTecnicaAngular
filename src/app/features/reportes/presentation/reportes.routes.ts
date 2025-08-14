@@ -1,10 +1,10 @@
 import { Routes } from "@angular/router";
-import { Reportes } from "./reportes/reportes";
+import { LowStockReportComponent } from "./reportes/reportes";
 
 export const reporteRoutes: Routes = [
   {
     path: '',
-    component: Reportes,
+    component: LowStockReportComponent,
   },
   
   //  {

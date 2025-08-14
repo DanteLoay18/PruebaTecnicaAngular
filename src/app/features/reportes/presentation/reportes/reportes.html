@@ -1,0 +1,90 @@
+<div class="p-4 max-w-5xl mx-auto">
+    <h2 class="text-xl font-semibold mb-4">Reporte: Inventario Bajo</h2>
+
+    <div class="flex items-end gap-3 mb-4">
+
+
+        <button class="bg-slate-800 text-white px-4 py-2 rounded" (click)="cargar()" [disabled]="loading()">
+            {{ loading() ? 'Cargando...' : 'Cargar datos' }}
+        </button>
+
+        <button class="bg-blue-600 text-white px-4 py-2 rounded" (click)="generarPDF()">
+            Generar PDF
+        </button>
+    </div>
+
+    <div *ngIf="hasData()">
+        <p class="text-sm text-slate-600 mb-2">
+            {{ data().length }} productos encontrados unidades
+        </p>
+
+        <div class="rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <!-- Scroll y altura máxima -->
+            <div class="overflow-auto max-h-[70vh]">
+                <table class="min-w-full text-sm text-slate-700">
+                    <thead
+                        class="sticky top-0 z-10 bg-slate-50/90 backdrop-blur supports-[backdrop-filter]:bg-slate-50/75">
+                        <tr class="divide-x divide-slate-200">
+                            <th scope="col"
+                                class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+                                #</th>
+                            <th scope="col"
+                                class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+                                Código</th>
+                            <th scope="col"
+                                class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+                                Producto</th>
+                            <th scope="col"
+                                class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+                                Categoría</th>
+                            <th scope="col"
+                                class="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+                                Precio</th>
+                            <th scope="col"
+                                class="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+                                Stock</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-200">
+                        <tr *ngFor="let p of data(); index as i"
+                            class="odd:bg-white even:bg-slate-50 hover:bg-slate-100/70 transition-colors">
+                            <td class="px-4 py-2.5 text-right font-mono tabular-nums text-slate-600">{{ i + 1 }}</td>
+
+                            <td class="px-4 py-2.5 whitespace-nowrap">
+                                <span class="font-mono tabular-nums text-slate-800">{{ p.id }}</span>
+                            </td>
+
+                            <td class="px-4 py-2.5">
+                                <div class="max-w-[28ch] truncate font-medium text-slate-800" [title]="p.nombre">{{
+                                    p.nombre }}</div>
+                            </td>
+
+                            <td class="px-4 py-2.5">
+                                <span
+                                    class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700 ring-1 ring-inset ring-slate-200">
+                                    {{ p.categoriaId || '-' }}
+                                </span>
+                            </td>
+
+                            <td class="px-4 py-2.5 text-right whitespace-nowrap">
+                                <span class="font-mono tabular-nums">{{ p.precio != null ? (p.precio | currency:'PEN') :
+                                    '-' }}</span>
+                            </td>
+
+                            <td class="px-4 py-2.5 text-right whitespace-nowrap">
+                                <span class="font-mono tabular-nums">{{ p.cantidad }}</span>
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <p *ngIf="!loading() && !hasData()" class="text-slate-500 text-sm">
+        No hay datos cargados.
+    </p>
+</div>
