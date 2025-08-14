@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { ProductActions } from './productos.action';
 import * as Sel from './productos.selectors';
-import { RestauranteFacade } from '../../../features/productos/application/producto.facade';
+import { ProductoFacade } from '../../../features/productos/application/producto.facade';
 import { ToastService } from '../../services/toast.service';
 import { Router } from '@angular/router';
 import { CategoriaService } from '../../services/categoria.service';
@@ -13,7 +13,7 @@ import { CategoriaService } from '../../services/categoria.service';
 export class RestaurantsEffects {
   private actions$ = inject(Actions);
   private store = inject(Store);
-  private restauranteFacade = inject(RestauranteFacade);
+  private productoFacade = inject(ProductoFacade);
   private categoriaService = inject(CategoriaService);
   private toastService = inject(ToastService);
   private router = inject(Router);
@@ -51,17 +51,11 @@ export class RestaurantsEffects {
       ofType(ProductActions.loadRequested),
       withLatestFrom(this.store.select(Sel.selectQueryForApi)),
       switchMap(([_, q]) =>
-        // ✅ Opción A: si tu Facade acepta un objeto
-        this.restauranteFacade.getPagination(q).pipe(
+        this.productoFacade.getPagination(q).pipe(
           map(r => ProductActions.loadSucceeded({ data: r.results, total: r.totalRecords })),
           catchError((e) => of(ProductActions.loadFailed({ error: e?.message ?? 'Error' })))
         )
 
-        // ✅ Opción B (descomenta si tu Facade recibe args sueltos):
-        // this.restauranteFacade.getPagination(q.page, q.pageSize, q.sort, q.dir, q.search).pipe(
-        //   map(r => ProductActions.loadSucceeded({ data: r.data, total: r.total })),
-        //   catchError((e) => of(ProductActions.loadFailed({ error: e?.message ?? 'Error' })))
-        // )
       )
     )
   );
@@ -71,7 +65,7 @@ export class RestaurantsEffects {
       ofType(ProductActions.create),
 
       switchMap(({ request }) =>
-        this.restauranteFacade.createRestaurante(request).pipe(
+        this.productoFacade.create(request).pipe(
           map(r => ProductActions.createSuccess({ message: r.message })),
           catchError(({ error }) => {
             return of(ProductActions.createFailure({ message: error.message }))
@@ -79,7 +73,7 @@ export class RestaurantsEffects {
         ))
     ));
 
-  createRestauranteSuccess$ = createEffect(
+  createSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(ProductActions.createSuccess),
@@ -89,7 +83,7 @@ export class RestaurantsEffects {
     { dispatch: false }
   );
 
-  createRestauranteFailute$ = createEffect(
+  createFailute$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(ProductActions.createFailure),
@@ -101,7 +95,6 @@ export class RestaurantsEffects {
             })
           }
         })
-        // tap(() => this.router.navigateByUrl('/restaurantes'))
       ),
     { dispatch: false }
   );
@@ -111,17 +104,17 @@ export class RestaurantsEffects {
       ofType(ProductActions.getOne),
 
       switchMap(({ id }) =>
-        this.restauranteFacade.getById(id).pipe(
+        this.productoFacade.getById(id).pipe(
           map((restaurante) => ProductActions.getOneSuccess({ entity: restaurante })),
         ))
     ));
 
-  updateRestaurante$ = createEffect(() =>
+  update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProductActions.update),
 
       switchMap(({ request }) =>
-        this.restauranteFacade.updateRestaurante(request).pipe(
+        this.productoFacade.update(request).pipe(
           map(r => ProductActions.createSuccess({ message: r.message })),
           catchError(({ error }) => {
             return of(ProductActions.createFailure({ message: error.message }))
@@ -129,7 +122,7 @@ export class RestaurantsEffects {
         ))
     ));
 
-  updateRestauranteSuccess$ = createEffect(
+  updateSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(ProductActions.updateSuccess),
@@ -151,7 +144,6 @@ export class RestaurantsEffects {
             })
           }
         })
-        // tap(() => this.router.navigateByUrl('/restaurantes'))
       ),
     { dispatch: false }
   );
@@ -172,7 +164,7 @@ export class RestaurantsEffects {
       ofType(ProductActions.delete),
 
       switchMap(({ id }) =>
-        this.restauranteFacade.delete(id).pipe(
+        this.productoFacade.delete(id).pipe(
           map(r => ProductActions.deleteSuccess({ message: r.message })),
           catchError(({ error }) => {
             return of(ProductActions.deleteFailure({ message: error.message, messages: error.messages  }))
@@ -203,7 +195,6 @@ export class RestaurantsEffects {
             })
           }
         })
-        // tap(() => this.router.navigateByUrl('/restaurantes'))
       ),
     { dispatch: false }
   );

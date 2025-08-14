@@ -3,7 +3,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { filter, finalize, of, switchMap, take } from 'rxjs';
-import { RestauranteFacade } from '../../application/producto.facade';
 import { Store } from '@ngrx/store';
 import { ProductActions } from '../../../../core/state/productos/productos.action';
 import * as RestaurantSelector from '../../../../core/state/productos/productos.selectors';
@@ -80,7 +79,7 @@ export class FormProducto implements OnInit {
   }
 
 
-  cancelar() { this.router.navigate(['/restaurantes']); }
+  cancelar() { this.router.navigate(['/productos']); }
 
   guardar() {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }

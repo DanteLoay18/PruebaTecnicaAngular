@@ -5,18 +5,18 @@ import { ProductoRepository } from '../domain/producto.repository';
 import { CreateProductoRequest, Producto, RestaurantePaginationRequest, UpdateProductoRequest } from '../domain/producto.model';
 
 @Injectable({ providedIn: 'root' })
-export class RestauranteFacade {
+export class ProductoFacade {
     private restauranteRepo = inject(ProductoRepository);
 
     getPagination({ page, size, nombre, categoria }: RestaurantePaginationRequest): Observable<PaginationResults<Producto>> {
         return this.restauranteRepo.getPagination(page, size, nombre, categoria);
     }
 
-    createRestaurante(request: CreateProductoRequest): Observable<Response<string>> {
+    create(request: CreateProductoRequest): Observable<Response<string>> {
          return this.restauranteRepo.create(request);
     }
 
-    updateRestaurante(request: UpdateProductoRequest): Observable<Response<string>> {
+    update(request: UpdateProductoRequest): Observable<Response<string>> {
          return this.restauranteRepo.update(request);
     }
 
