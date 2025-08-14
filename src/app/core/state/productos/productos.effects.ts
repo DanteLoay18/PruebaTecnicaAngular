@@ -37,7 +37,7 @@ export class RestaurantsEffects {
     this.actions$.pipe(
       ofType(ProductActions.changeSearch),
       debounceTime(300),
-      distinctUntilChanged((a, b) => a.search === b.search),
+      distinctUntilChanged((a, b) => a.nombre === b.nombre && a.categoriaId === b.categoriaId),
       map(() => ProductActions.loadRequested())
     )
   );

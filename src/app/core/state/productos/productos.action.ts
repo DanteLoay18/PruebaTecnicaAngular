@@ -13,7 +13,7 @@ export const ProductActions = createActionGroup({
     'Change Page': props<{ page: number }>(),
     'Change Page Size': props<{ pageSize: number }>(),
     'Change Sort': props<{ sort?: string; dir?: SortDir }>(),
-    'Change Search': props<{ search: string }>(),
+    'Change Search': props<{ nombre: string, categoriaId: string }>(),
 
     'Load Requested': emptyProps(),
     'Load Succeeded': props<{ data: Producto[]; total: number }>(),

@@ -3,11 +3,7 @@
   <div class="flex items-center justify-between mb-5">
     <h1 class="text-xl font-semibold text-slate-800">Productos</h1>
     <div class="flex items-center gap-2">
-      <!-- TODO : FUNcionalidad de exportar -->
-      <!-- <button class="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 5H3m6 7h12M3 19h12" stroke-width="2" stroke-linecap="round"/></svg>
-          Exportar
-        </button> -->
+
       <button (click)="agregarRestaurante()"
         class="rounded-lg bg-primary-400 px-4 py-2 text-white text-sm font-medium shadow hover:bg-primary-600">
         + Agregar Producto
@@ -16,37 +12,58 @@
   </div>
 
   <!-- Toolbar -->
-  <div class="flex flex-wrap items-center gap-3 mb-4">
-    <div class="relative">
-      <svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400"
-        viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <circle cx="11" cy="11" r="7" stroke-width="2" />
-        <path d="m21 21-4.3-4.3" stroke-width="2" stroke-linecap="round" />
-      </svg>
-      <input placeholder="Buscar"
-        class="w-64 rounded-lg border border-slate-200 pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-200" />
-    </div>
-
-    <div class="relative">
-      <button
-        class="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50">
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M3 4h18l-7 8v6l-4 2v-8L3 4z" stroke-width="2" stroke-linejoin="round" />
+  <div class="mb-4">
+    <form [formGroup]="formBusqueda" class="flex flex-wrap items-center gap-3 md:flex-nowrap" (ngSubmit)="filtrar()">
+      <div class="relative">
+        <svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="11" cy="11" r="7" stroke-width="2" />
+          <path d="m21 21-4.3-4.3" stroke-width="2" stroke-linecap="round" />
         </svg>
-        Filters
-      </button>
-    </div>
+        <input placeholder="Buscar" formControlName="nombreProducto"
+          class="w-64 rounded-lg border border-slate-200 pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-200" />
+      </div>
+
+
+      <div class="relative">
+        <select formControlName="categoriaId"
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-slate-200">
+          <option [ngValue]="null" disabled>Seleccione una categoría</option>
+          <option *ngFor="let c of (categorias$ | async)?.items; trackBy: trackByCatId" [ngValue]="c.id">
+            {{ c.nombre }}
+          </option>
+        </select>
+
+        <p *ngIf="(categorias$ | async)?.items?.length === 0" class="text-xs text-slate-500 mt-1">
+          No hay categorías disponibles.
+        </p>
+
+
+      </div>
+
+      <div class="relative">
+        <button
+          class="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M3 4h18l-7 8v6l-4 2v-8L3 4z" stroke-width="2" stroke-linejoin="round" />
+          </svg>
+          Filtrar
+        </button>
+      </div>
+    </form>
+
+
   </div>
 
   <!-- Table -->
   <app-table [headers]="vm.headers" [rows]="vm.rows" [total]="vm.total" [pageIndex]="vm.page" [pageSize]="vm.pageSize"
-     [loading]="vm.loading"
-    (sortChange)="onSort($event.key!, $event.dir)" (pageChange)="onPage($event)" (pageSizeChange)="onPageSize($event)">
+    [loading]="vm.loading" (sortChange)="onSort($event.key!, $event.dir)" (pageChange)="onPage($event)"
+    (pageSizeChange)="onPageSize($event)">
     <ng-template let-row>
       <tr class="hover:bg-slate-50">
         <td class="px-4 py-3">
           <div class="flex items-center gap-3">
-            
+
             <div class="text-slate-800 font-medium">{{ row.nombre }}</div>
           </div>
         </td>
@@ -56,14 +73,13 @@
         <td class="px-4 py-3 text-right text-slate-700">{{ row.precio }}</td>
         <td class="px-4 py-3 text-left">{{ row.cantidad }}</td>
         <td class="px-4 py-3">
-         {{ row.categoriaId }}
+          {{ row.categoriaId }}
         </td>
         <td>
           <!-- Asegúrate de tener Font Awesome cargado (CDN o paquete) -->
           <div class="flex items-center gap-2">
             <!-- Botón Editar -->
-            <button type="button"
-              (click)="editar(row.id)"
+            <button type="button" (click)="editar(row.id)"
               class="group relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500"
               aria-label="Editar">
               <i class="fa-solid fa-pen-to-square text-sm"></i>
@@ -76,8 +92,7 @@
             </button>
 
             <!-- Botón Ver productos -->
-            <button type="button"
-              (click)="showEliminar(row.id, row.nombre)"
+            <button type="button" (click)="showEliminar(row.id, row.nombre)"
               class="group relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500"
               aria-label="Eliminar">
               <i class="fa-solid fa-trash text-sm"></i>
@@ -97,5 +112,6 @@
 
 </div>
 
-<app-alerta-modal [visible]="showAlerta" [btnAceptarVisible]="true"  [message]="mensaje" type="warning" (close)="closeAlerta()"  (eliminar)="eliminar()">
+<app-alerta-modal [visible]="showAlerta" [btnAceptarVisible]="true" [message]="mensaje" type="warning"
+  (close)="closeAlerta()" (eliminar)="eliminar()">
 </app-alerta-modal>

@@ -7,10 +7,12 @@ import * as RestaurantSelector from '../../../../core/state/productos/productos.
 import { ProductActions } from '../../../../core/state/productos/productos.action';
 import { Router } from '@angular/router';
 import { Alerta } from '../../../../shared';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Categoria } from '../../../../core/models/categoria.model';
 
 @Component({
   selector: 'app-restaurante',
-  imports: [CommonModule, Table, Alerta],
+  imports: [CommonModule, Table, Alerta, ReactiveFormsModule],
   templateUrl: './producto.html',
   styleUrl: './producto.scss'
 })
@@ -19,9 +21,15 @@ export class Producto {
   private store = inject(Store);
 
   private router = inject(Router);
+  private fb = inject(FormBuilder);
   showAlerta = false;
   mensaje = '';
   idEliminar = '';
+
+  formBusqueda = this.fb.group({
+    nombreProducto: [''],
+    categoriaId: ['']
+  })
 
 
   vm$ = combineLatest({
@@ -33,12 +41,15 @@ export class Producto {
     headers: this.store.select(RestaurantSelector.selectHeaders),
   });
 
+  categorias$= this.store.select(RestaurantSelector.selectCategorias);
+
 
   ngOnInit() {
     this.store.dispatch(ProductActions.init());
+    this.store.dispatch(ProductActions.getCategorias());
   }
 
-  onSearch(search: string) { this.store.dispatch(ProductActions.changeSearch({ search })); }
+  // onSearch(search: string) { this.store.dispatch(ProductActions.changeSearch({ search })); }
   onSort(sort: string, dir: 'asc' | 'desc') { this.store.dispatch(ProductActions.changeSort({ sort, dir })); }
   onPage(page: number) { this.store.dispatch(ProductActions.changePage({ page })); }
   onPageSize(pageSize: number) { this.store.dispatch(ProductActions.changePageSize({ pageSize })); }
@@ -72,6 +83,13 @@ export class Producto {
   closeAlerta(){
     this.showAlerta = false;
   }
+
+  filtrar(){
+    this.store.dispatch(ProductActions.changeSearch({ nombre: this.formBusqueda.value.nombreProducto ?? '', categoriaId : this.formBusqueda.value.categoriaId ?? ''}));
+  }
+
+  trackByCatId = (_: number, c: Categoria) => c.id;
+  
 
 }
 

@@ -44,9 +44,9 @@ export const productReducer = createReducer(
     ...s,
     query: { ...s.query, sort, dir, page: 1 }
   })),
-  on(ProductActions.changeSearch, (s, { search }) => ({
+  on(ProductActions.changeSearch, (s, { nombre, categoriaId }) => ({
     ...s,
-    query: { ...s.query, search, page: 1 }
+    query: { ...s.query, nombre, categoria: categoriaId, page: 1 }
   })),
 
   on(ProductActions.loadRequested, (s) => ({ ...s, loading: true, error: null })),
