@@ -1,7 +1,11 @@
+@let role = ((user$ | async)?.role ?? '').toUpperCase();
+
 <div class="p-6" *ngIf="vm$ | async as vm">
   <!-- Header -->
   <div class="flex items-center justify-between mb-5">
     <h1 class="text-xl font-semibold text-slate-800">Productos</h1>
+    @if(role === 'ADMINISTRADOR'){
+
     <div class="flex items-center gap-2">
 
       <button (click)="agregarRestaurante()"
@@ -9,6 +13,7 @@
         + Agregar Producto
       </button>
     </div>
+    }
   </div>
 
   <!-- Toolbar -->
@@ -78,6 +83,8 @@
         <td>
           <!-- Asegúrate de tener Font Awesome cargado (CDN o paquete) -->
           <div class="flex items-center gap-2">
+            @if(role === 'ADMINISTRADOR'){
+
             <!-- Botón Editar -->
             <button type="button" (click)="editar(row.id)"
               class="group relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -103,6 +110,7 @@
                 Eliminar
               </span>
             </button>
+            }
           </div>
 
         </td>

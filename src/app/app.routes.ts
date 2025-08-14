@@ -18,7 +18,8 @@ export const routes: Routes = [
     canActivate: [authGuard],
     component: MainLayoutComponent,
     children: [
-      { path: 'productos', loadChildren: () => import('./features/productos/presentation/producto.routes').then(m => m.restauranteRoutes) },
+      { path: 'productos', loadChildren: () => import('./features/productos/presentation/producto.routes').then(m => m.productoRoutes) },
+      { path: 'reportes', loadChildren: () => import('./features/reportes/presentation/reportes.routes').then(m => m.reporteRoutes)},
       { path: '', pathMatch: 'full', redirectTo: 'productos' },
 
     ]

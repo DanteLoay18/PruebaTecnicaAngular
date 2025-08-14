@@ -4,5 +4,6 @@ export interface NavItem {
   icon: string;              
   link: string | string[];   
   exact?: boolean;           
-  pill?: boolean;            
+  pill?: boolean;    
+  roles:string[]        
 }

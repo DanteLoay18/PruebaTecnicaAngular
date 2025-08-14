@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Alerta } from '../../../../shared';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Categoria } from '../../../../core/models/categoria.model';
+import { selectUser } from '../../../../core';
 
 @Component({
   selector: 'app-restaurante',
@@ -25,6 +26,9 @@ export class Producto {
   showAlerta = false;
   mensaje = '';
   idEliminar = '';
+
+  user$ = this.store.select(selectUser);
+  
 
   formBusqueda = this.fb.group({
     nombreProducto: [''],

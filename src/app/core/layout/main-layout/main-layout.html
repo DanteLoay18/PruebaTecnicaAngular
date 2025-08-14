@@ -9,7 +9,7 @@
       class="shrink-0 h-full"
       [collapsed]="collapsed"
       (toggle)="toggleSidebar()"
-      [items]="menus"
+      [items]="(menus$ | async) ?? []"
     ></app-side-bar>
 
     <!-- Contenido -->

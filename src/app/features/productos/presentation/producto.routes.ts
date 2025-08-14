@@ -2,7 +2,7 @@ import { Routes } from "@angular/router";
 import { Producto } from "./producto/producto";
 import { FormProducto,  } from "./form-producto/form-producto";
 
-export const restauranteRoutes: Routes = [
+export const productoRoutes: Routes = [
   {
     path: '',
     component: Producto,
