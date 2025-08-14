@@ -1,11 +1,11 @@
 import { Routes } from "@angular/router";
-import { Restaurante } from "./restaurante/restaurante";
-import { FormRestaurante } from "./form-restaurante/form-restaurante";
+import { Producto } from "./producto/producto";
+import { FormRestaurante } from "./form-producto/form-restaurante";
 
 export const restauranteRoutes: Routes = [
   {
     path: '',
-    component: Restaurante,
+    component: Producto,
   },
   {
     path: 'register',

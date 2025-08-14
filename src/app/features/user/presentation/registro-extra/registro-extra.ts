@@ -39,7 +39,6 @@ export class RegistroExtra {
 
   sendCode() {
     if (this.step1Form.get('email')?.valid) {
-      console.log('✅ Código enviado a:', this.step1Form.get('email')?.value);
       this.codeSent.set(true);
     }
   }
@@ -56,7 +55,6 @@ export class RegistroExtra {
 
   resendCode(): void {
     const email = '[correo_actual_del_usuario]'; // puedes tenerlo desde login o authService
-    console.log(`📨 Reenviando código a ${email}`);
     alert('Código reenviado al correo registrado');
   }
 

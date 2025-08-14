@@ -3,11 +3,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { filter, finalize, of, switchMap, take } from 'rxjs';
-import { RestauranteFacade } from '../../application/restaurante.facade';
+import { RestauranteFacade } from '../../application/producto.facade';
 import { Store } from '@ngrx/store';
-import { RestaurantsActions } from '../../../../core/state/restaurantes/restaurants.action';
-import * as RestaurantSelector from '../../../../core/state/restaurantes/restaurants.selectors';
-import { restauranteIdLocalStorageKey } from '../restaurante/restaurante';
+import { ProductActions } from '../../../../core/state/productos/productos.action';
+import * as RestaurantSelector from '../../../../core/state/productos/productos.selectors';
+import { restauranteIdLocalStorageKey } from '../producto/producto';
+import { Categoria } from '../../../../core/models/categoria.model';
+import { CreateProductoRequest, UpdateProductoRequest } from '../../domain/producto.model';
 
 @Component({
   selector: 'app-form-restaurante',
@@ -24,6 +26,7 @@ export class FormRestaurante implements OnInit {
   isSaving$ = this.store.select(RestaurantSelector.selectIsSaving);
   isLoadingForm$ = this.store.select(RestaurantSelector.selectIsLoadingForm);
   formEntity$ = this.store.select(RestaurantSelector.selectForm);
+  categorias$ = this.store.select(RestaurantSelector.selectCategorias);
   // Modo
   isEdit = false;
   private id: string | null = null;
@@ -36,35 +39,43 @@ export class FormRestaurante implements OnInit {
   form = this.fb.group({
     nombre: ['', [Validators.required, Validators.maxLength(80)]],
     descripcion: ['', [Validators.required, Validators.maxLength(200)]],
-    tiempoEntrega: [null, [Validators.required, Validators.min(0)]],
+    precio: [0, [
+      Validators.required,
+      Validators.min(0),
+      Validators.pattern(/^\d+(\.\d{1,2})?$/) // 2 decimales como máximo
+    ]],
+    cantidad: [null, [Validators.required, Validators.min(0), Validators.pattern(/^\d+$/)]],
+    categoriaId: ['', [Validators.required]],
 
-    activo: [false], 
+    activo: [false],
   });
 
   ngOnInit(): void {
+    this.store.dispatch(ProductActions.getCategorias());
+
     this.id = localStorage.getItem(restauranteIdLocalStorageKey);
     this.isEdit = !!this.id;
 
-    console.log(this.isEdit)
 
     if (this.isEdit && this.id) {
-      this.store.dispatch(RestaurantsActions.getOne({ id: this.id }));
+      this.store.dispatch(ProductActions.getOne({ id: this.id }));
 
       this.formEntity$
         .pipe(filter(Boolean), take(1))
         .subscribe((r: any) => {
-          console.log(r);
           this.form.patchValue({
             nombre: r.nombre,
             descripcion: r.descripcion,
-            tiempoEntrega: r.tiempoEntrega,
-            activo: r.activo
+            precio: r.precio,
+            activo: r.activo,
+            cantidad: r.cantidad,
+            categoriaId: r.categoriaId
           });
           this.logoPreview = r.logoUrl ?? null;
         });
     } else {
       // nuevo: limpia el form en el store
-      this.store.dispatch(RestaurantsActions.clearForm());
+      this.store.dispatch(ProductActions.clearForm());
     }
   }
 
@@ -73,24 +84,30 @@ export class FormRestaurante implements OnInit {
 
   guardar() {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    // this.saving = true;
 
     const v = this.form.value;
-    const fd = new FormData();
-
-    // ⚠️ Usa los NOMBRES EXACTOS que espera el backend
-    fd.append('nombre', v.nombre!);
-    fd.append('descripcion', v.descripcion ?? '');
-    if (v.tiempoEntrega != null) fd.append('TiempoEntrega', String(v.tiempoEntrega));
-    if (this.logoFile) fd.append('foto', this.logoFile, this.logoFile.name);
 
     if (this.isEdit && this.id) {
-      fd.append('id', this.id);
-      fd.append('activo', `${v.activo}`);
-      fd.append('isUpdateImagen', `false`)
-      this.store.dispatch(RestaurantsActions.update({  formData: fd }));
+      const request: UpdateProductoRequest = {
+        id: this.id,
+        nombre: v.nombre!,
+        descripcion: v.nombre!,
+        cantidad: v.cantidad!,
+        precio: v.precio!,
+        categoriaId: v.categoriaId!,
+
+      }
+      this.store.dispatch(ProductActions.update({ request }));
     } else {
-      this.store.dispatch(RestaurantsActions.create({ formData: fd }));
+      const request: CreateProductoRequest = {
+        nombre: v.nombre!,
+        descripcion: v.nombre!,
+        cantidad: v.cantidad!,
+        precio: v.precio!,
+        categoriaId: v.categoriaId!,
+
+      }
+      this.store.dispatch(ProductActions.create({ request }));
     }
 
 
@@ -109,5 +126,7 @@ export class FormRestaurante implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  quitarLogo() { this.logoFile = null; this.logoPreview = null; }
+
+
+  trackByCatId = (_: number, c: Categoria) => c.id;
 }

@@ -1,3 +1,5 @@
+import { Categoria } from "./categoria.model";
+import { SelectorModel } from "./selector.model";
 
 export interface TableHeader {
   label: string;
@@ -18,18 +20,19 @@ export interface TableState<T> {
   isSaving: boolean;
   form: T | null;
   isLoadingForm: boolean
+  categorias: SelectorModel<Categoria> | null
 
 }
 
 export interface TableQuery {
   page: number;       // 1-based
-  pageSize: number;
-  sort?: string;      // nombre de columna en tu API
-  dir?: SortDir;
-  search?: string;    // texto de búsqueda
+  size: number;
+  nombre?: string;      // nombre de columna en tu API
+  categoria?: string;    // texto de búsqueda
 }
 
 export type Align = 'left'|'center'|'right';
 
 
 export type SortDir = 'asc' | 'desc';
+

@@ -21,7 +21,6 @@ export const noAuthGuard: CanActivateFn = (route, _state) => {
         store.select(selectHealthOk).pipe(take(1)),
         store.select(selectIsAuthenticated).pipe(take(1)),
       ]).pipe(
-          tap(() => console.log('No Auth Guard', route)),
 
         map(([healthOk, isAuth]) => {
           if (!healthOk) return router.createUrlTree(['/maintenance']);

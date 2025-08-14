@@ -21,13 +21,10 @@ export const authGuard: CanActivateFn = (_route, state ) => {
         store.select(selectHealthOk).pipe(take(1)),
         store.select(selectIsAuthenticated).pipe(take(1)),
       ]).pipe(
-        tap(() => console.log(' Auth Guard')),
 
         map(([healthOk, isAuth]) => {
           if (!healthOk) return router.createUrlTree(['/maintenance']);
-          console.log('isauth', isAuth)
-          console.log('healthOK', healthOk)
-          console.log('Url', state.url)
+        
           return isAuth ? true : router.createUrlTree(['/auth'], { queryParams: { returnUrl: state.url } });
         })
       )

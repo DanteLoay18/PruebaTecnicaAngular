@@ -18,7 +18,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     component: MainLayoutComponent,
     children: [
-      { path: 'productos', loadChildren: () => import('./features/restaurantes/presentation/restaurante.routes').then(m => m.restauranteRoutes) },
+      { path: 'productos', loadChildren: () => import('./features/productos/presentation/producto.routes').then(m => m.restauranteRoutes) },
       { path: '', pathMatch: 'full', redirectTo: 'productos' },
 
     ]

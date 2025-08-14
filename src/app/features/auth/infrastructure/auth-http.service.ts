@@ -44,11 +44,7 @@ export class AuthHttpService extends AuthRepository {
 
     return this.http.get<Response<AuthResponse>>(
       `${this.API_URL}/check-status`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).pipe(
+    ).pipe(
       map(response => response.data),
       tap(response => this.tokenStorage.setToken(response.accessToken))
     );
