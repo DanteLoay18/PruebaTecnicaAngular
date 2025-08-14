@@ -1,13 +1,13 @@
- <!-- Splash / Loader -->
-    <div 
-      *ngIf="!(vm$ | async)?.loaded" 
-      class="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 text-white z-[9999]"
-    >
-      <div class="w-14 h-14 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
-      <p class="text-lg font-medium">Iniciando…</p>
-    </div>
+<!-- Splash / Loader -->
+<div *ngIf="!(vm$ | async)?.loaded"
+  class="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 text-white z-[9999]">
+  <div class="w-14 h-14 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
+  <p class="text-lg font-medium">Iniciando…</p>
+</div>
 
-    <!-- Contenido principal -->
-    <div *ngIf="(vm$ | async)?.loaded" class="min-h-screen bg-gray-50">
-      <router-outlet/>
-    </div>
+<!-- Contenido principal -->
+<div *ngIf="(vm$ | async)?.loaded" class="min-h-screen bg-gray-50">
+  <router-outlet />
+</div>
+
+<app-toast></app-toast>

@@ -84,7 +84,7 @@ export class RestaurantsEffects {
       this.actions$.pipe(
         ofType(ProductActions.createSuccess),
         tap(({ message }) => this.toastService.success(message)),
-        tap(() => this.router.navigateByUrl('/restaurantes'))
+        tap(() => this.router.navigateByUrl('/productos'))
       ),
     { dispatch: false }
   );
@@ -134,7 +134,7 @@ export class RestaurantsEffects {
       this.actions$.pipe(
         ofType(ProductActions.updateSuccess),
         tap(({ message }) => this.toastService.success(message)),
-        tap(() => this.router.navigateByUrl('/restaurantes'))
+        tap(() => this.router.navigateByUrl('/productos'))
       ),
     { dispatch: false }
   );

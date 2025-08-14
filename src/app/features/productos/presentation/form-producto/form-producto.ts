@@ -66,7 +66,7 @@ export class FormProducto implements OnInit {
           this.form.patchValue({
             nombre: r.nombre,
             descripcion: r.descripcion,
-            precio: r.precio,
+            precio: parseFloat(r.precio),
             activo: r.activo,
             cantidad: r.cantidad,
             categoriaId: r.categoriaId
@@ -91,7 +91,7 @@ export class FormProducto implements OnInit {
       const request: UpdateProductoRequest = {
         id: this.id,
         nombre: v.nombre!,
-        descripcion: v.nombre!,
+        descripcion: v.descripcion!,
         cantidad: v.cantidad!,
         precio: v.precio!,
         categoriaId: v.categoriaId!,
@@ -101,7 +101,7 @@ export class FormProducto implements OnInit {
     } else {
       const request: CreateProductoRequest = {
         nombre: v.nombre!,
-        descripcion: v.nombre!,
+        descripcion: v.descripcion!,
         cantidad: v.cantidad!,
         precio: v.precio!,
         categoriaId: v.categoriaId!,

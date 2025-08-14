@@ -5,10 +5,11 @@ import { checkBackendHealth, selectBackendStatus } from './core';
 import { CommonModule } from '@angular/common';
 import { combineLatest, map, Subject, take, takeUntil, tap } from 'rxjs';
 import { selectAppLoaded, selectHealthOk, selectIsAuthenticated } from './core/state';
+import { ToastComponent } from './shared/components/toast/toast';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, ToastComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

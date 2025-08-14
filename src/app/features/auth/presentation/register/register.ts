@@ -6,6 +6,7 @@ import { AuthFacade } from '../../application/auth.facade';
 import { TipoUsuarioConstants } from '../../../../core';
 import { catchError, throwError } from 'rxjs';
 import { RegisterAuthRequest } from '../../domain';
+import { ToastService } from '../../../../core/services/toast.service';
 @Component({
   selector: 'app-register',
   imports: [
@@ -23,6 +24,7 @@ export class Register {
   private fb = inject(FormBuilder);
   private authFacade = inject(AuthFacade);
   private router = inject(Router);
+  private toastService = inject(ToastService);
 
   showPassword = false;
   showConfirmedPassword = false;
@@ -62,19 +64,25 @@ export class Register {
       this.authFacade.register(registerRequest)
         .pipe(
           catchError((err) => {
+            console.log(err);
             const { error } = err;
-            console.error('Error capturado en pipe:', error.message);
+            this.toastService.error(error.message);
 
-            this.mostrarAlerta('error', error.message);
-
-            // aquí puedes hacer algo con el error
             return throwError(() => err); // volver a lanzar si es necesario
           })
         )
         .subscribe((resp) => {
+          console.log(resp);
+          if(resp.status > 201){
+            this.toastService.error(resp.message);
 
+            return;
+            
+          }
 
-          this.mostrarAlerta('success', resp.message);
+            this.toastService.success('Se registro correctamente');
+
+            this.router.navigateByUrl('/auth')
 
         })
     } else {
@@ -92,21 +100,6 @@ export class Register {
     this.showConfirmedPassword = !this.showConfirmedPassword;
   }
 
-  mostrarAlerta(tipo: 'error' | 'success' | 'info' | 'warning', mensaje: string) {
-    this.alertType = tipo;
-    this.errorMessage = mensaje;
-    this.showError = true;
-  }
 
-  closeAlerta(){
-    this.showError = false;
-
-    if(this.alertType === 'success'){
-      
-      this.router.navigate(['/usuario/registro-extra'])
-
-      
-
-    }
-  }
+  
 }
